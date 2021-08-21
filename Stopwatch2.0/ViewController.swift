@@ -89,6 +89,7 @@ class ViewController: UIViewController {
             
             // tableview controller stuff goes here
             
+            
             // create a lap in the first table view cell when the timer is started...this cell also has timer function going in real timer
             // when the lap button is tapped, bring in a new cell with a timer going and push the first cell with the time at which the lap button was tapped to the next cell below and stop the time for that cell...
         }
