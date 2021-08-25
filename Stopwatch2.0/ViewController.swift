@@ -9,6 +9,9 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    //Tableview outlet
+    @IBOutlet var tableView: UITableView! // force unwrap bc it is being connected in the storyboard...
+    
     @IBOutlet weak var TimerLabel: UILabel! // the title of the label (the timeString goes here)
     @IBOutlet weak var startStopButton: UIButton! // add the frame here???
     @IBOutlet weak var resetButton: UIButton!
@@ -33,12 +36,17 @@ class ViewController: UIViewController {
         resetButton.setTitle("Reset", for: .normal)
         resetButton.setTitleColor(.white, for: .normal)
         resetButton.backgroundColor = .systemGray
+        
+        //delegate and dataSource
+        tableView.delegate = self
+        tableView.dataSource = self
     }
 
     @IBAction func resetTapped(_ sender: Any) { // if the reset button is tapped...
         self.count = 0 // reset the count
         self.timer.invalidate() // stop the timer
         self.TimerLabel.text = makeTimeString(hours: 0, minutes: 0, seconds: 0) // resets the timeString
+        
         // show the START button again to further indicate that the timer has been reset
         self.startStopButton.frame = CGRect(x: 267, y: 381.5, width: 20, height: 20)
         self.startStopButton.layer.cornerRadius = 0.5 * startStopButton.bounds.size.width
@@ -87,10 +95,8 @@ class ViewController: UIViewController {
             resetButton.setTitleColor(.white, for: .normal)
             resetButton.backgroundColor = .systemGray
             
-            // tableview controller stuff goes here
             
-            
-            // create a lap in the first table view cell when the timer is started...this cell also has timer function going in real timer
+            // create a lap in the first table view cell when the timer is started...this cell also has timer function going in real time
             // when the lap button is tapped, bring in a new cell with a timer going and push the first cell with the time at which the lap button was tapped to the next cell below and stop the time for that cell...
         }
     }
@@ -123,3 +129,22 @@ class ViewController: UIViewController {
     }
 }
 
+// Delegate and DataSource extensions
+extension ViewController: UITableViewDelegate { // handles interaction of cells
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat { // height of each row
+        50
+    }
+}
+
+extension ViewController: UITableViewDataSource { // handles the data shown in the tableView...
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 5
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell") //add indexPath
+        cell?.textLabel?.text = "lap time goes here" // when lap button is pressed, the lap time will go here...
+        return cell!
+    }
+}
